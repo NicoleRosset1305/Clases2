@@ -12,26 +12,31 @@
 library(readxl)
 library(data.table)
 
-
-
 casos<-data.table(read_excel("Class_02/2020-03-17-Casos-confirmados.xlsx",na = "—",trim_ws = TRUE,col_names = TRUE),stringsAsFactors = FALSE)
 
 names(casos)
+casos[,table(Región)] #con table podemos saber las regiones 
+casos[,.N,by=.(Región)] #nos indica las regiones y cantidades
 casos<-casos[Región=="Metropolitana",]
 
-saveRDS(casos,"Class_03/casosRM.rds")
+saveRDS(casos,"Class_03/casosRM.rds") #como guardar datos
+
+#rds formato de guardar datos en r
 
 write.csv(casos,file = 'Class_03/CasosCovid_RM.csv',fileEncoding = 'UTF-8')
 
-writexl::write_xlsx(casos,path = "Class_03/CasosenExcel.xlsx")
+writexl::write_xlsx(casos,path = "Class_03/CasosenExcel.xlsx") # se genera un caso de excel
 
-library(foreign)
+# los dos puntos son para buscar funciones del paquete
+
+library(foreign) #sirve para escribir en stata o exportar datps spcs
 
 write.dta
 
 
 
 casosRM<-fread("Class_03/CasosCovid_RM.csv",header = T, showProgress = T,data.table = T)
+#fread ayuda a leer datos muy pesados
 
 casosRM[,table(Sexo)]
 casosRM[Sexo=="Fememino",Sexo:="Femenino"]
@@ -48,11 +53,17 @@ casosRM[,Sexo:=factor(Sexo)]
 head(casosRM$Sexo)
 head(as.numeric(casosRM$Sexo))
 
+labels(casosRM$Sexo)
+
 table(casosRM$Sexo)
 casosRM[,.N,by=.(Sexo)]
 casosRM[,.N,by=.(Sexo,`Centro de salud`)]
 
 #Collapsing by Centro de Salud 
+
+casosRM[,sum(`Casos confirmados`,na.rm = T),by=.(`Centro de salud`)]
+
+casosRM[,mean(Edad,na.rm = T),by=.(`Centro de salud`)]
 
 names(casosRM)
 obj1<-casosRM[,.N,by=.(`Centro de salud`)]
@@ -78,6 +89,7 @@ dim(B)
 dim(C)
 dim(D)
 
+casosRM[,.N,by=.(`Centro de salud`)]
 
 #merging data sets
 
