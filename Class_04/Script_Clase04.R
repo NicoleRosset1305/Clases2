@@ -100,6 +100,7 @@ G<-reshape(E,direction = 'wide',timevar = 'Sexo',v.names = c('AvAge','Casos conf
 #---- Part 2: Visualization  -------------------
 
 #Scatter plot
+#brunshing and linking: ir barriendo datos(tomar un conjunto de datos y saber sus caracteristicas)
 #Base R 
 plot(G$`Casos confirmados.Femenino`,G$`Casos confirmados.Masculino`)
 text(x =G$`Casos confirmados.Femenino`,y=G$`Casos confirmados.Masculino`, G$`Centro de salud`,cex=0.5)
@@ -111,14 +112,16 @@ ggplot(data = E,mapping = aes(x = AvAge,y=`Casos confirmados`)) + geom_point()
 
 
 ggplot(data = G,mapping = aes(x=`Casos confirmados.Femenino`,y=`Casos confirmados.Masculino`))+geom_point()
+#aes junta variables que se quieren mapear
 
 p1<-ggplot(G,aes(x=`Casos confirmados.Femenino`,y=`Casos confirmados.Masculino`))+geom_point(aes(size=AvAge.Femenino,colour=AvAge.Masculino))+geom_text(aes(label=`Centro de salud`),size=2,check_overlap = T)
 
 ggplot(data = E,mapping = aes(x=AvAge,y=`Casos confirmados`))+geom_point()+facet_wrap(~Sexo)+geom_smooth(method = 'lm',se=F) + geom_smooth(method = 'loess',col='red',se=F)
+#facet divide en dos por ejemplo en femeninos y masculinos
 
 
 #plotly
-#install.packages('plotly')
+install.packages('plotly')
 library(plotly)
 ggplotly(p1)
 
@@ -131,6 +134,7 @@ ggplot(E,aes(x=AvAge))+geom_histogram()
 
 ggplot(E,aes(x=AvAge))+geom_density()
 ggplot(E,aes(x=AvAge,group=Sexo))+geom_density()
+
 ggplot(E,aes(x=AvAge,group=Sexo,colour=Sexo))+geom_density()
 ggplot(E,aes(x=AvAge,group=Sexo,colour=Sexo))+geom_density()+facet_wrap(~Sexo)
 
@@ -212,6 +216,7 @@ ggplot(zonas_valparaiso) +
 
 # creating a fake spatial distribution of adult population in space
 zonas_valparaiso2<-cbind(zonas_valparaiso[,c("geocodigo","codigo_comuna","codigo_provincia","codigo_region","geometry")],"AdultosMayores"=sample(zonas_valparaiso$AdultosMayores,size = length(zonas_valparaiso$AdultosMayores)))
+
 
 
 ggplot(zonas_valparaiso2) + 
