@@ -29,6 +29,8 @@ comunas_rm<-mapa_comunas[mapa_comunas$codigo_region==13,]
 comunas_rm<-merge(x = comunas_rm,y = covid,by.x="codigo_comuna",by.y="Codigo comuna",all.x=TRUE,sort=F)
 
 
+comunas_rm<-st_sf(comunas_rm)
+
 # Choropleth plot (continuos scale)
 
 library(RColorBrewer)
@@ -45,6 +47,7 @@ p_cont<-ggplot(comunas_rm) +
 ## Fixed
 library(classInt)
 help(package='classInt')
+
 
 breaks_fixed <- classIntervals(comunas_rm$`Casos Confirmados`, n = 5, style = "fixed", fixedBreaks=c(min(comunas_rm$`Casos Confirmados`,na.rm = T),5,20,50,100,max(comunas_rm$`Casos Confirmados`,na.rm = T)))
 
