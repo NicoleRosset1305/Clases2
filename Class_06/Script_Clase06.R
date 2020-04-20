@@ -29,6 +29,7 @@ library(data.table)
 archivos<-dir(path = "Class_06/producto2/")
 COVID<-fread(input =paste0("Class_06/producto2/",archivos[1]))
 names(COVID)[6]<-paste0("Confirmados_",substr(archivos[1],start = 1,stop = 10))
+
 for(i in 2:length(archivos)){
   aa<-fread(input =paste0("Class_06/producto2/",archivos[i]))
   aa<-aa[,.(`Codigo comuna`,`Casos Confirmados`)]
@@ -37,7 +38,7 @@ for(i in 2:length(archivos)){
 }
 View(COVID)
 
-COVID[is.na(`Confirmados_2020-03-30`),`Confirmados_2020-03-30`:=0]
+COVID[is.na(`Confirmados_2020-03-30`),`Confirmados_2020-03-30`:=0] ##PONER 0 A NAs
 
 library(ggplot2)
 ggplot(COVID,aes(x=`Confirmados_2020-03-30`,y=`Confirmados_2020-04-17`))+geom_point()+geom_smooth(method = lm)
@@ -51,6 +52,7 @@ ggplot(COVID,aes(x=`Confirmados_2020-04-15`,y=`Confirmados_2020-04-17`))+geom_po
 #install.packages("chilemapas")
 library(chilemapas)
 library(data.table)
+
 library(ggplot2)
 
 comunas_rm<-mapa_comunas[mapa_comunas$codigo_region==13,]
@@ -58,6 +60,7 @@ comunas_rm<-mapa_comunas[mapa_comunas$codigo_region==13,]
 comunas_rm<-merge(x = comunas_rm,y = COVID[`Codigo region`==13,],by.x="codigo_comuna",by.y="Codigo comuna",all.x=TRUE,sort=F)
 
 comunas_rm<-as_Spatial(comunas_rm)
+
 
 library(spdep)
 
