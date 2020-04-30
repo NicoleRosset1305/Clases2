@@ -7,7 +7,7 @@
 
 # Spatial randomness
 
-install.packages('plot.matrix')
+#install.packages('plot.matrix')
 library(plot.matrix)
 library(classInt)
 
